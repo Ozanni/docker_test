@@ -44,7 +44,7 @@ pipeline {
         stage('ssh') {
             steps {
                 sshagent(['ssh-private-key']) {
-                    sh 'ssh -o StrictHostKeyChecking=no -l admin@DESKTOP-VQAR5GA 192.168.1.12 touch test.txt'
+                    sh 'ssh -o StrictHostKeyChecking=no -l van 192.168.1.12 touch test.txt'
                 }
             }
         }
