@@ -17,27 +17,35 @@ pipeline {
         //         checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Ozanni/ris_portal.git']]])
         //     }
         // }
-        stage('Build') {
+        // stage('Build') {
+        //     steps {
+        //         script {
+        //             setBuildStatus("Build in progress", "PENDING")
+        //             sh '''
+        //                 docker build -t test2 .
+        //                 docker tag test2 vannguyen02/test2:latest
+        //             '''
+                    
+                    
+        //         }
+        //     }
+        // }
+        // stage('push docker image') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'Docker-hub-password', variable: 'PASSWORD')]) {
+        //                 sh '''
+        //                     docker login -u vannguyen02 -p $PASSWORD
+        //                     docker push vannguyen02/test2
+        //                 '''
+        //             }
+        //     }
+        // }
+
+        stage('ssh') {
             steps {
-                script {
-                    setBuildStatus("Build in progress", "PENDING")
-                    sh '''
-                        docker build -t test2 .
-                        docker tag test2 vannguyen02/test2:latest
-                    '''
-                    
-                    
+                sshagent(['ssh-private-key']) {
+                    sh 'ssh -o StrictHostKeyChecking=no -l van 192.168.1.12 touch test.txt'
                 }
-            }
-        }
-        stage('push docker image') {
-            steps {
-                withCredentials([string(credentialsId: 'Docker-hub-password', variable: 'PASSWORD')]) {
-                        sh '''
-                            docker login -u vannguyen02 -p $PASSWORD
-                            docker push vannguyen02/test2
-                        '''
-                    }
             }
         }
 
